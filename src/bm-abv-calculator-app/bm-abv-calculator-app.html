@@ -1,0 +1,114 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+
+<dom-module id="bm-abv-calculator-app">
+  <template>
+    <custom-style>
+      <style is="custom-style">
+        .toolbar {
+          height: 144px;
+          padding: 16px;
+          background: var(--paper-indigo-600);
+          color: var(--text-primary-color);
+          @apply --paper-font-display1;
+        }
+
+        .item {
+          position: relative;
+          padding: 8px;
+          border: 1px solid;
+          border-color: var(--divider-color);
+          border-top: 0;
+        }
+
+        .fab {
+          position: absolute;
+          box-sizing: border-box;
+          padding: 8px;
+          width: 56px;
+          height: 56px;
+          right: 16px;
+          top: -28px;
+          border-radius: 50%;
+          text-align: center;
+
+          background: var(--accent-color);
+          color: var(--text-primary-color);
+          @apply --paper-font-display1;
+
+          cursor: pointer;
+        }
+
+        .card {
+
+        }
+      </style>
+    </custom-style>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div>
+      <div class="toolbar">5.0% <small>ABV</small></div>
+
+      <!-- <div class="item">
+        <paper-input name="addtodo" label="Add Todo" id="addtodo"></paper-input>
+        <div class="fab" on-click="addToDo">+</div>
+      </div> -->
+
+      <div class="item">
+        <template is="dom-repeat" items="{{todolist}}" as="todo" restamp>
+          <div class="card">
+            <paper-checkbox class="checkbox" id="[[todo]]">
+              [[todo]]
+            </paper-checkbox>
+            <paper-button
+              class="delete"
+              toggles
+              raised
+              on-tap="removeToDo"
+              data-value="[[index]]">Remove</paper-button>
+          </div>
+        </template>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class PolymerTodoApp extends Polymer.Element {
+      static get is() { return 'bm-abv-calculator-app'; }
+      static get properties() {
+        return {
+          todolist: {
+            type: Array,
+            value: () => []
+          }
+        };
+      }
+      addToDo() {
+          let tempTodo = this.todolist.slice();
+          tempTodo.push(this.$.addtodo.value);
+          this.set('todolist', tempTodo);
+          this.$.addtodo.value = "";
+      }
+      removeToDo(e) {
+        let tempTodo =  this.todolist.filter((x, id)=> this.id == e.target.dataValue);
+        this.set('todolist', tempTodo);
+      }
+    }
+
+    window.customElements.define(PolymerTodoApp.is, PolymerTodoApp);
+  </script>
+</dom-module>

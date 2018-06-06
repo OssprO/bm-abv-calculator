@@ -1,0 +1,7 @@
+{
+  "name": "bm-abv-calculator",
+  "short_name": "bm-abv-calculator",
+  "description": "Brewer Map ABV Calculator App",
+  "start_url": "/",
+  "display": "standalone"
+}
