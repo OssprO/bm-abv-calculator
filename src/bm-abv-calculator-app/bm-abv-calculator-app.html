@@ -4,80 +4,101 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
 
 <dom-module id="bm-abv-calculator-app">
   <template>
     <custom-style>
       <style is="custom-style">
         .toolbar {
-          height: 144px;
-          padding: 16px;
-          background: var(--paper-indigo-600);
-          color: var(--text-primary-color);
+          min-height: 5rem;
+          padding: 3rem 1rem;
+          background: var(--paper-brown-300);
+          color: var(--text-black-color);
           @apply --paper-font-display1;
         }
 
-        .item {
+        .row {
+          justify-content: center !important;
+          display: flex;
+          flex-wrap: wrap;
+          margin-right: -15px;
+          margin-left: -15px;
+        }
+
+        .col-6 {
+          -webkit-box-flex: 0;
+          -ms-flex: 0 0 50%;
+          flex: 0 0 50%;
+          max-width: 50%;
           position: relative;
-          padding: 8px;
-          border: 1px solid;
-          border-color: var(--divider-color);
-          border-top: 0;
+          width: 100%;
+          min-height: 1px;
+          padding-right: 15px;
+          padding-left: 15px;
         }
 
-        .fab {
-          position: absolute;
-          box-sizing: border-box;
-          padding: 8px;
-          width: 56px;
-          height: 56px;
-          right: 16px;
-          top: -28px;
-          border-radius: 50%;
-          text-align: center;
-
-          background: var(--accent-color);
-          color: var(--text-primary-color);
-          @apply --paper-font-display1;
-
-          cursor: pointer;
+        h1 {
+          font-size: 2.5rem;
+          margin: 0;
         }
 
-        .card {
-
+        h1 > small {
+          font-weight: 400;
         }
+
+        .mt-3 {
+          margin-top: 2rem;
+        }
+
+        paper-button {
+          background: var(--paper-brown-900);
+          color: #FFFFFF;
+        }
+
+        #originalg, #finalg{
+           --paper-input-container-focus-color: var(--paper-brown-900);
+        }
+
       </style>
     </custom-style>
     <style>
       :host {
         display: block;
+        font-family: 'Roboto', sans-serif;
       }
     </style>
 
     <div>
-      <div class="toolbar">5.0% <small>ABV</small></div>
+      <div class="toolbar">
+        <div class="row">
+          <div class="col-6">
+            <h1>[[abv]]% <small>ABV</small> </h1>
+          </div>
+        </div>
+      </div>
 
       <!-- <div class="item">
         <paper-input name="addtodo" label="Add Todo" id="addtodo"></paper-input>
         <div class="fab" on-click="addToDo">+</div>
       </div> -->
-
-      <div class="item">
-        <template is="dom-repeat" items="{{todolist}}" as="todo" restamp>
-          <div class="card">
-            <paper-checkbox class="checkbox" id="[[todo]]">
-              [[todo]]
-            </paper-checkbox>
-            <paper-button
-              class="delete"
-              toggles
-              raised
-              on-tap="removeToDo"
-              data-value="[[index]]">Remove</paper-button>
+      <iron-a11y-keys target="[[formABV]]" keys="enter" on-keys-pressed="calculateABV"></iron-a11y-keys>
+      <iron-form id="formABV" on-iron-form-presubmit="onPresubmit">
+          <div class="row mt-3">
+            <div class="col-6">
+              <paper-input type="number" step=".001" name="originalg" label="Original Gravity (OG)" id="originalg"></paper-input>
+            </div>
+            <div class="col-6">
+              <paper-input type="number" step=".001" name="finalg" label="Final Gravity (FG)" id="finalg"></paper-input>
+            </div>
           </div>
-        </template>
-      </div>
+          <div class="row mt-3">
+            <paper-button raised on-tap="calculateABV">Calculate</paper-button>
+          </div>
+      </iron-form>
     </div>
 
   </template>
@@ -87,28 +108,28 @@
      * @customElement
      * @polymer
      */
-    class PolymerTodoApp extends Polymer.Element {
+    class PolymerBMABVCalculator extends Polymer.Element {
       static get is() { return 'bm-abv-calculator-app'; }
       static get properties() {
         return {
-          todolist: {
-            type: Array,
-            value: () => []
+          abv : {
+            type: String,
+            value: '0.0'
           }
         };
       }
-      addToDo() {
-          let tempTodo = this.todolist.slice();
-          tempTodo.push(this.$.addtodo.value);
-          this.set('todolist', tempTodo);
-          this.$.addtodo.value = "";
+
+      onPresubmit(event) {
+        console.log(event);
       }
-      removeToDo(e) {
-        let tempTodo =  this.todolist.filter((x, id)=> this.id == e.target.dataValue);
-        this.set('todolist', tempTodo);
+
+      calculateABV(){
+        let tempABV = (this.$.originalg.value - this.$.finalg.value)*131.25;
+        this.set('abv', tempABV.toFixed(2));
       }
+
     }
 
-    window.customElements.define(PolymerTodoApp.is, PolymerTodoApp);
+    window.customElements.define(PolymerBMABVCalculator.is, PolymerBMABVCalculator);
   </script>
 </dom-module>
