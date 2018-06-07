@@ -8,7 +8,9 @@
     "paper-input": "^2.2.0",
     "paper-checkbox": "^2.0.2",
     "paper-styles": "^2.1.0",
-    "paper-button": "^2.1.0"
+    "paper-button": "^2.1.0",
+    "iron-form": "^2.3.0",
+    "iron-a11y-keys": "^2.1.2"
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0-prerelease.5",
