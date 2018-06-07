@@ -1,10 +1,11 @@
 {
   "entrypoint": "index.html",
   "fragments": [
-    
+
   ],
   "sources": [
-    "src/*",
+    "src/**/*",
+    "images/**/*",
     "bower.json"
   ],
   "extraDependencies": [
