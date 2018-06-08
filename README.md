@@ -1,6 +1,6 @@
 # \<bm-abv-calculator\>
 
-To Do App with Polymer 2.0
+Brewer Map ABV Calculator App with Polymer 2.0
 
 ## Install the Polymer-CLI
 
@@ -21,7 +21,7 @@ $ polymer build
 This will create builds of your application in the `build/` directory, optimized to be served in production. You can then serve the built versions by giving `polymer serve` a folder to serve from:
 
 ```
-$ polymer serve build/default
+$ polymer serve build/es6-bundled
 ```
 
 ## Running Tests
@@ -31,3 +31,11 @@ $ polymer test
 ```
 
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+
+## To Dos
+
+- Responsive optimization
+- Improve button
+- Save in LocalStorage
+- Add menu: Info, Help and Contact
+- Better look for Equation Selector 
