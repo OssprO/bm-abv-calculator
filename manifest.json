@@ -1,11 +1,12 @@
 {
-  "name": "Brewer Maps ABV Calculator",
+  "name": "Brewer Map ABV Calculator",
   "short_name": "ABV Calculator",
   "description": "Brewer Map ABV Calculator App",
   "start_url": "bm-abv-calculator/build/es6-bundled/",
   "display": "standalone",
   "theme_color": "#795548",
   "background_color": "#ffffff",
+  "orientation": "portrait",
   "icons": [
     {
     "src": "images/icons/icon-128x128.png",
