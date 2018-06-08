@@ -1,6 +1,6 @@
 {
-  "name": "bm-abv-calculator",
-  "short_name": "bm-abv-calculator",
+  "name": "Brewer Maps ABV Calculator",
+  "short_name": "ABV Calculator",
   "description": "Brewer Map ABV Calculator App",
   "start_url": "bm-abv-calculator/build/es6-bundled/",
   "display": "standalone",
