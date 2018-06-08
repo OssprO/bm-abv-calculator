@@ -4,8 +4,12 @@
 <link rel="import" href="./../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="./../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="./../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="./../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="./../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="./../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="./../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="./../../bower_components/web-animations-js/web-animations-next.min.html">
 
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
 
@@ -15,8 +19,8 @@
       <style is="custom-style">
         .toolbar {
           min-height: 5rem;
-          padding: 3rem 1rem;
-          background: var(--paper-brown-300);
+          padding: 3rem 0;
+          background: var(--paper-brown-200);
           color: var(--text-black-color);
           @apply --paper-font-display1;
         }
@@ -27,6 +31,7 @@
           flex-wrap: wrap;
           margin-right: -15px;
           margin-left: -15px;
+          width: 100%;
         }
 
         .col-6 {
@@ -59,39 +64,45 @@
           color: #FFFFFF;
         }
 
-        #originalg, #finalg{
+        #originalg, #finalg, #equation{
            --paper-input-container-focus-color: var(--paper-brown-900);
+           --paper-input-container-color: var(--paper-brown-900);
+        }
+
+        #equation {
+          --paper-dropdown-menu-icon: {color: var(--paper-brown-900)};
+        }
+
+        paper-dropdown-menu {
+          width: 100%;
         }
 
       </style>
     </custom-style>
-    <style>
-      :host {
-        
-      }
-    </style>
 
     <div>
       <div class="toolbar">
         <div class="row">
           <div class="col-6">
             <h1>[[abv]]% <small>ABV</small> </h1>
+            <paper-dropdown-menu name="equation" label="Equation" id="equation" on-iron-select="onEquationSelected">
+              <paper-listbox slot="dropdown-content" selected="0">
+                <paper-item>Standard</paper-item>
+                <paper-item>Alternate</paper-item>
+              </paper-listbox>
+            </paper-dropdown-menu>
           </div>
         </div>
       </div>
 
-      <!-- <div class="item">
-        <paper-input name="addtodo" label="Add Todo" id="addtodo"></paper-input>
-        <div class="fab" on-click="addToDo">+</div>
-      </div> -->
       <iron-a11y-keys target="[[formABV]]" keys="enter" on-keys-pressed="calculateABV"></iron-a11y-keys>
       <iron-form id="formABV" on-iron-form-presubmit="onPresubmit">
           <div class="row mt-3">
             <div class="col-6">
-              <paper-input type="number" step=".001" name="originalg" label="Original Gravity (OG)" id="originalg"></paper-input>
+              <paper-input type="number" step=".002" name="originalg" label="Original Gravity (OG)" id="originalg"></paper-input>
             </div>
             <div class="col-6">
-              <paper-input type="number" step=".001" name="finalg" label="Final Gravity (FG)" id="finalg"></paper-input>
+              <paper-input type="number" step=".002" name="finalg" label="Final Gravity (FG)" id="finalg"></paper-input>
             </div>
           </div>
           <div class="row mt-3">
@@ -113,7 +124,11 @@
         return {
           abv : {
             type: String,
-            value: '0.0'
+            value: '0.00'
+          },
+          equation: {
+            type: String,
+            value: '0'
           }
         };
       }
@@ -122,9 +137,28 @@
         console.log(event);
       }
 
+      onEquationSelected(e){
+        var selectedItem = e.target.selectedItem;
+        this.set('equation', selectedItem.innerText);
+        console.log(selectedItem.innerText);
+        this.calculateABV();
+      }
+
       calculateABV(){
-        let tempABV = (this.$.originalg.value - this.$.finalg.value)*131.25;
-        this.set('abv', tempABV.toFixed(2));
+
+        let tempABV = 0;
+        let og = this.$.originalg.value;
+        let fg = this.$.finalg.value;
+        if(og && fg){
+          //console.log(this.$.equation.value );
+          if(this.get('equation') === 'Standard') {
+            tempABV = (og - fg)*131.25;
+          } else {
+            tempABV = (76.08 * (og-fg) / (1.775-og)) * (fg / 0.794);
+          }
+          this.set('abv', tempABV.toFixed(2));
+        }
+        
       }
 
     }
